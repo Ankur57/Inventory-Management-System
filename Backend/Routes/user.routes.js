@@ -22,4 +22,17 @@ router.post('/login',[
     controller.loginUser
 )
 
+router.post(
+  '/inventory',
+  [
+    body('id').notEmpty().withMessage('ID is required'),
+    body('category').notEmpty().withMessage('Category is required'),
+    body('product').notEmpty().withMessage('Product is required'),
+    body('sellingPrice').isNumeric().withMessage('Selling Price must be a number'),
+    body('costPrice').isNumeric().withMessage('Cost Price must be a number'),
+    body('profit').isNumeric().withMessage('Profit must be a number'),
+  ],
+  controller.inventory
+);
+
 module.exports = router;
