@@ -3,12 +3,33 @@ import Navbar from '../Components/Navbar'
 import Home_Chart from "../Components/Home_Chart"
 import Home_chart2 from "../Components/Home_chart2"
 import { Link } from "react-router-dom"
+import Inventory from "./Inventory"
+import List from "../Components/List"
+import { useContext } from "react";
+import {InventoryContext} from "../Context/InventoryContext";
+import HomeList from "../Components/HomeList"
+
 // React
 
-
-
-
 const Home = () => {
+  const { inventoryList, setInventoryList } = useContext(InventoryContext);
+
+  const handleDeleteItem = async (itemId) => {
+  try {
+    // 1. Delete from backend
+    console.log(itemId)
+    await axios.delete(`${import.meta.env.VITE_BASE_URL}/user/inventory/${itemId}`);
+
+    // 2. Remove from local state to update UI
+    setInventoryList((prevList) =>
+      prevList.filter((item) => item._id !== itemId)
+    );
+  } catch (error) {
+    console.error("Error deleting item:", error);
+  }
+};
+
+  
   return (
     <div
     style={{ backgroundImage: `url(${myBG})` }}
@@ -21,7 +42,7 @@ const Home = () => {
         <div className="bg-red-50 flex flex-col items-center ml-10 h-[55%] w-[18%]
          rounded-xl border-2 border-slate-950">
           <h2 className="font-Playfair text-xl md:text-2xl">Total Items</h2>
-          <h2 className="font-Playfair text-4xl mt-3">100</h2>
+          <h2 className="font-Playfair text-4xl mt-3">{inventoryList.length}</h2>
         </div>
         <div className="bg-red-50 flex flex-col items-center mr-10 ml-10 h-[55%] w-[18%]
          rounded-xl border-2 border-slate-950">
@@ -45,18 +66,18 @@ const Home = () => {
       <div className="bg-red-50 flex flex-col items-center ml-10 h-[55%] w-[50%] min-[410px]:w-[30%]
         rounded-xl border-2 border-slate-950">
         <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Total Items</h2>
-        <h2 className="font-Playfair text-4xl mt-3">100</h2>
+        <h2 className="font-Playfair text-4xl mt-3">{inventoryList.length}</h2>
       </div>
       <div className="bg-red-50 flex flex-col items-center mr-10 ml-10 h-[55%] w-[50%] min-[410px]:w-[30%]
         rounded-xl border-2 border-slate-950">
-        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Total Items</h2>
+        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Categories</h2>
         <h2 className="font-Playfair  text-4xl mt-3">100</h2>
       </div>
       </div>
       <div className="flex items-center justify-between sm:gap-44 w-[90%] h-[50%]">
       <div className="bg-red-50 flex flex-col items-center ml-10 h-[55%] w-[50%] min-[410px]:w-[30%]
         rounded-xl border-2 border-slate-950">
-        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Total Items</h2>
+        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Revenue</h2>
         <h2 className="font-Playfair text-4xl mt-3">100</h2>
       </div>
       <div className="bg-red-50 flex flex-col items-center mr-10 ml-10 h-[55%] w-[50%] min-[410px]:w-[30%]
@@ -77,88 +98,9 @@ const Home = () => {
           cursor-pointer">Manage Inventory</Link>
           </div>
           <div className="flex justify-between mr-3 ml-2">
-            {/*Product ID*/}
-            <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold">Product ID</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>          
-          </div>
-          {/*Category*/}
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Category</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3> 
-                       
-          {/*Product name*/}
-          </div>
-          {/*Product*/}
-            <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Product</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-          </div>
-          {/*Price*/}
-          <div className="hidden sm:flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Price</h2>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-          </div>
-          {/*Action*/}
-          <div className=" hidden sm:flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Action</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-          </div>
+            <HomeList handleDeleteItem={handleDeleteItem}
+            inventoryList={inventoryList} setInventoryList={setInventoryList} />
+            
           </div>
       </div>
       <div className="w-[30%] h-[100%] border-2 border-slate-950">
@@ -190,88 +132,8 @@ const Home = () => {
           cursor-pointer">Manage Inventory</h2>
           </div>
           <div className="flex justify-between mr-3 ml-2">
-            {/*Product ID*/}
-            <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold">Product ID</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">1</h3>          
-          </div>
-          {/*Category*/}
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Category</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Jewellery</h3> 
-                       
-          {/*Product name*/}
-          </div>
-          {/*Product*/}
-            <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Product</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Ring</h3>
-          </div>
-          {/*Price*/}
-          <div className="hidden sm:flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Price</h2>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-            <h3 className="text-xl">₹<span className="text-xl text-center font-medium">1500</span></h3>
-          </div>
-          {/*Action*/}
-          <div className=" hidden sm:flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Action</h2>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-            <h3 className="font-Playfair text-xl text-center font-medium">Delete</h3>
-          </div>
+            <HomeList handleDeleteItem={handleDeleteItem}
+            inventoryList={inventoryList} setInventoryList={setInventoryList}/>
           </div>
       </div>   
       <div className="w-[100%] h-[100%] border-2 bg-red-50 border-slate-950">

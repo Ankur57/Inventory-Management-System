@@ -6,6 +6,7 @@ import Insights from './Pages/Insights'
 import Inventory from './Pages/Inventory'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
+import UserProtectedWrapper from './Components/UserProtectedWrapper'
 
 
 import { Route, Routes} from 'react-router-dom'
@@ -19,8 +20,19 @@ export default function App() {
         <Route path = '/login' element = {<Login/>}/>
         <Route path = '/register' element = {<Signup/>}/>
         <Route path = '/forgot' element = {<Forgot/>}/>
-        <Route path = '/home' element = {<Home/>}/>
-        <Route path = '/inventory' element = {<Inventory/>}/>
+        <Route path = '/home'
+         element = {
+        <UserProtectedWrapper>
+          <Home/>
+        </UserProtectedWrapper>
+          }/>
+        <Route path = '/inventory'
+        element = {
+        <UserProtectedWrapper>
+        <Inventory/>
+        </UserProtectedWrapper>
+        }
+        />
         <Route path = '/insights' element = {<Insights/>}/>
         <Route path = '/addItem' element = {<AddItem/>}/>
       </Routes>

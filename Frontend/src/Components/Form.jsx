@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Category from './Category';
 
 const Form = (props) => {
    const [productId, setProductId] = useState("");
@@ -9,6 +10,7 @@ const Form = (props) => {
 
     const handleSubmit = (e)=>{
       e.preventDefault()
+
 
       const cost = parseFloat(costPrice);
       const selling = parseFloat(sellingPrice);
@@ -35,8 +37,8 @@ const Form = (props) => {
 
 
   return (
-    <div className='h-[100%] w-[100%] flex items-center justify-center'>
-      {/*Desktop view*/}{/**/} 
+    <div className='h-[100%] w-[100%] flex items-center justify-center relative '>
+      {/*Desktop view*/}{/**/}
       {/*Mobile view*/}
         <div className='h-[80%] w-[80%] md:w-[50%] flex flex-col items-center bg-stone-200 border-2
          overflow-auto border-black rounded-sm'>
@@ -69,11 +71,15 @@ const Form = (props) => {
                     onChange={(e) => setCategory(e.target.value)}
                     className="border p-2 rounded w-[100%]"
                   >
-                    <option value="">Select</option>
-                    <option value="React">Jewellery</option>
-                    <option value="Node">Wallet</option> 
+                    <option value="">-- Select --</option>
+                    <option value="Jewellery">Jewellery</option>
+                    <option value="Ring">Ring</option>
                    </select>
+                   <button
+                    onClick={() => props.setCategoryform(true)} 
+                   type="button" className='rounded-lg bg-slate-400 text-black w-[13%] p-1 mt-1 opacity-80 text-sm '>Add</button>
               </div>
+              
               {/*Row-2*/}
               
                 <div className='flex flex-col'>
@@ -84,9 +90,10 @@ const Form = (props) => {
                     className="border p-2 rounded"
                   >
                     <option value="">-- Select --</option>
-                    <option value="React">Ring</option>
-                    <option value="Node">Necklace</option> 
+                    <option value="Ring">Ring</option>
+                    <option value="Necklace">Necklace</option> 
                    </select>
+                   <button type="button" className='rounded-lg bg-slate-400 text-black w-[13%] p-1 mt-1 opacity-80 text-sm '>Add</button>
                 </div>
                 <div className='flex flex-col'>
                   <h1 className=' text-xl font-semibold'>Enter Cost Price</h1>
@@ -109,7 +116,7 @@ const Form = (props) => {
                   <h1 className='font- text-xl font-semibold'>Profit</h1>
                   <h1 className='font- text-xl font-semibold'>{(sellingPrice - costPrice) || 0}</h1>
                 </div>             
-              <button className='bg-sky-400 p-3 w-[50%] sm:w-[30%] rounded-lg sm:text-xl font-semibold mt-5 mb-5'>Add Item</button>
+              <button type="submit" className='bg-sky-400 p-3 w-[50%] sm:w-[30%] rounded-lg sm:text-xl font-semibold mt-5 mb-5'>Add Item</button>
             </form>
             
         </div>

@@ -15,27 +15,31 @@ const Login = () => {
     const loginUser = {
       email,password
     }
-  try{
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`,loginUser);
-
-    if(response.status === 200){
-      //userContext is not used here
-      localStorage.setItem('token',response.data.token);
-      navigate('/home')
+  try {
+  const response = await axios.post(
+    `${import.meta.env.VITE_BASE_URL}/user/login`,
+    loginUser,
+    {
+      withCredentials: true // 👈 very important for cookies
     }
-    if(response.status === 401){
-      alert('Incorrect email or password')
-    }
+  );
 
-    setemail('')
-    setpassword('')
-    
-  }catch(error){
-    console.log("Login error",error);
+  if (response.status === 200) {
+    console.log("✅ Login successful");
+    console.log("User:", response.data.user);
+    navigate('/home');
+  } 
+} catch (error) {
+  console.log("Login error:", error);
+  
+  if (error.response && error.response.status === 401) {
+    alert('Incorrect email or password');
+  } else {
     alert('Login failed. Please try again.');
-
   }
 }
+}
+
 
   return (
     <div 

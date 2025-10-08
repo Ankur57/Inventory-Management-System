@@ -1,25 +1,33 @@
-const dotenv = require('dotenv')//Environment variable
+const dotenv = require('dotenv'); // Environment variable
 dotenv.config();
 const express = require('express');
 const app = express();
 const connectToDb = require('./db/db');
-connectToDb();
 const userRoutes = require('./Routes/user.routes');
-const cors = require('cors')
-app.use(cors());
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
-app.use(cookieParser())
 
+// ✅ Connect to Database
+connectToDb();
 
+// ✅ Correct CORS setup
+app.use(cors({
+  origin: 'http://localhost:5173', // your React frontend URL
+  credentials: true                // allows cookies to be sent and received
+}));
+
+// ✅ Middleware
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-app.get('/',(req,res)=>{
-    console.log("Server is Running");
-    res.send("Hello World");
-}
-)
+// ✅ Test Route
+app.get('/', (req, res) => {
+  console.log("Server is Running");
+  res.send("Hello World");
+});
 
-app.use('/user',userRoutes);
+// ✅ Routes
+app.use('/user', userRoutes);
 
 module.exports = app;

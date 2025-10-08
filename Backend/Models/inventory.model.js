@@ -25,7 +25,7 @@ const InventorySchema = new mongoose.Schema({
         type : Number,
         required : true
     },
-})
+}, { timestamps: true })
 
 const InventoryModel = mongoose.model('Inventory',InventorySchema);
 

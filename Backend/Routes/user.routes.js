@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const controller = require('../Controller/controller')
 const {body} = require('express-validator')
+const inventory = require('../Controller/inventory.controller')
+const authmiddleware = require('../Middleware/auth.middleware')
 
 
 router.post('/register',[
@@ -32,7 +34,23 @@ router.post(
     body('costPrice').isNumeric().withMessage('Cost Price must be a number'),
     body('profit').isNumeric().withMessage('Profit must be a number'),
   ],
-  controller.inventory
+  inventory.inventory
 );
+
+router.post('/logout', authmiddleware.authUser, (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    sameSite: 'none', // 'lax' if both on localhost
+    secure: false,    // true only in production (HTTPS)
+  });
+  return res.status(200).json({ message: "Logged out successfully" });
+});
+
+// Get all inventory items
+router.get('/inventory', authmiddleware.authUser, inventory.getInventory);
+router.delete('/inventory/:id',authmiddleware.authUser, inventory.deleteInventory);
+router.get('/profile',authmiddleware.authUser,controller.getUserProfile)
+
+
 
 module.exports = router;

@@ -1,21 +1,22 @@
 import myBG from "../assets/Background3.jpg"
 import Navbar from "../Components/Navbar"
-import { useNavigate } from 'react-router-dom';
 import { useRef, useState,useEffect } from "react";
 import Form from "../Components/Form";
 import gsap from "gsap";
 import axios from "axios"
+import List from "../Components/List"; 
+import { useContext } from "react";
+import {InventoryContext} from "../Context/InventoryContext";
+import Category from "../Components/Category";
 
-const initialInventory = [
-  { id: 1, category: 'Jewellery', product: 'Ring', sellingprice: 1500, costPrice: 1000, profit: 500 },
-  { id: 2, category: 'Jewellery', product: 'Necklace', sellingprice: 800, costPrice: 500, profit: 300 }
-];
- 
 const Inventory = () => {
 
+  const { inventoryList, setInventoryList } = useContext(InventoryContext);
   const [form, setform] = useState(false)
+  const [Categoryform, setCategoryform] = useState(false)
   const FormPanelRef = useRef(null) 
-  const [inventoryList, setInventoryList] = useState(initialInventory);
+  const CategoryFormPanelRef = useRef(null) 
+  
 
    const handleAddItem = async (newItem) => {
     try{
@@ -24,8 +25,9 @@ const Inventory = () => {
       if(response.status === 400){
         alert("ProductID Already exist")
       }
+    const newInventoryItem = response.data.inventory;
+    setInventoryList(prevList => [...prevList, newInventoryItem]);
 
-    setInventoryList((prevList) => [...prevList, { ...newItem}]);
     setform(false);
 
     }catch(error){
@@ -37,6 +39,26 @@ const Inventory = () => {
   const handleCloseForm = () => {
     setform(false);
   };
+
+  const handleCloseCategoryForm = () => {
+    setCategoryform(false);
+  };
+
+  const handleDeleteItem = async (itemId) => {
+  try {
+    // 1. Delete from backend
+    console.log(itemId)
+    await axios.delete(`${import.meta.env.VITE_BASE_URL}/user/inventory/${itemId}`);
+
+    // 2. Remove from local state to update UI
+    setInventoryList((prevList) =>
+      prevList.filter((item) => item._id !== itemId)
+    );
+  } catch (error) {
+    console.error("Error deleting item:", error);
+  }
+};
+
 
    useEffect(() => {
     if (form) {
@@ -55,19 +77,38 @@ const Inventory = () => {
       });
     }
   }, [form]);
-     
+
+  useEffect(() => {
+    if (Categoryform) {
+      gsap.to(CategoryFormPanelRef.current, {
+        opacity: 1,
+        display: "block", // make sure it shows up
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    } else {
+      gsap.to(CategoryFormPanelRef.current, {
+        opacity: 0,
+        display: "none", // hide when closed
+        duration: 0.5,
+        ease: "power2.in"
+      });
+    }
+  }, [Categoryform]);
+ 
   return (
     <div
     style={{ backgroundImage: `url(${myBG})` }}
     className='h-screen w-screen bg-cover relative'>
     <div style={{ opacity: 0, display: "none" }} ref={FormPanelRef} className="absolute w-[100%] h-[100%]" >
-      <Form onAddItem={handleAddItem} onClose={handleCloseForm}/>
+      <Form onAddItem={handleAddItem} onClose={handleCloseForm} setCategoryform={setCategoryform} />
     </div>
-
+    <div style={{ opacity: 0, display: "none" }} ref={CategoryFormPanelRef} className="absolute w-[100%] h-[100%]" >
+      <Category onAddItem={handleAddItem} onClose={handleCloseForm} handleCloseCategoryForm={handleCloseCategoryForm} />
+    </div>
       <div>
         <Navbar/>
       </div>
-
       {/*Home Section 1 - Desktop view*/}
       <div className="hidden sm:flex justify-between items-center ml-5 w-[98%] h-[30%]">
         <div className="bg-red-50 flex flex-col items-center ml-10 h-[55%] w-[18%]
@@ -119,89 +160,8 @@ const Inventory = () => {
       </div>
       </div>
       </div>
-
-    <div
-    style={{ backgroundImage: `url(${myBG})` }}
-    className="w-screen h-screen bg-cover">
-      <div className=" border-2 rounded-xl border-black bg-red-50 h-[100%] w-[98%] ml-3 overflow-auto ">
-        <div className="flex justify-between mr-4 mt-2">
-        <h1 className="font-Playfair text-2xl md:text-4xl p-2 font-semibold">Your Inventory</h1>
-        <button
-        onClick={() => setform(true)}
-        className="bg-sky-200 font-semibold text-black sm:text-lg md:text-xl rounded-lg
-         w-[30%] sm:w-[20%] p-4">Add Item</button>
-        </div>
-        <div className="h-1 w-[200%] sm:w-[100%] bg-gray-500 mb-2 mt-2"></div>
-        <div
-        className="flex justify-between mr-3 ml-2 w-[200%] sm:w-[95%]">
-            {/*Product ID*/}
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold">Product ID</h2>
-            {inventoryList.map(item => (
-                <h3 key={item.id} className="font-Playfair text-xl text-center font-medium">
-                  {item.id}
-                </h3>
-              ))}
-          </div>
-          {/*Category*/}
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Category</h2>
-            {inventoryList.map(item => (
-                <h3 key={item.id} className="font-Playfair text-xl text-center font-medium">
-                  {item.category}
-                </h3>
-              ))} 
-          {/*Product name*/}
-          </div>
-          {/*Product Name*/}
-            <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Product</h2>
-            {inventoryList.map(item => (
-                <h3 key={item.id} className="font-Playfair text-xl text-center font-medium">
-                  {item.product}
-                </h3>
-              ))}
-          </div>
-          {/*Price*/}
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Selling Price</h2>
-            {inventoryList.map(item => (
-                <h3 key={item.id} className="text-xl">
-                  ₹<span className="text-xl text-center font-medium">{item.sellingprice}</span>
-                </h3>
-              ))}
-          </div>
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Cost Price</h2>
-            {inventoryList.map(item => (
-                <h3 key={item.id} className="text-xl">
-                  ₹<span className="text-xl text-center font-medium">{item.costPrice}</span>
-                </h3>
-              ))}
-          </div>
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Profit</h2>
-            {inventoryList.map(item => (
-                <h3 key={item.id} className="text-xl">
-                  ₹<span className="text-xl text-center font-medium">{item.profit}</span>
-                </h3>
-              ))}
-          </div>
-          {/*Action*/}
-          <div className="flex flex-col gap-2">
-            <h2 className="font-Playfair text-xl font-semibold ">Action</h2>
-            {inventoryList.map(item => (
-                <button 
-                  key={item.id} 
-                  onClick={() => handleDeleteItem(item.id)}
-                  className="font-Playfair text-xl text-center font-medium text-red-600">
-                  Delete
-                </button>
-              ))}
-          </div>
-          </div>
-      </div>
-    </div>
+      <List setform={setform} handleDeleteItem={handleDeleteItem}
+       inventoryList={inventoryList} setInventoryList={setInventoryList} />
     </div>
   )
 }

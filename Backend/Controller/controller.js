@@ -1,6 +1,5 @@
 const { validationResult } = require("express-validator")
 const userModel = require('../Models/user.model')
-const InventoryModel = require('../Models/inventory.model')
 
 
 module.exports.registerUser = async(req,res,next)=>{
@@ -51,6 +50,10 @@ module.exports.registerUser = async(req,res,next)=>{
     }
 }
 
+module.exports.getUserProfile = async(req,res,next)=>{
+    res.status(200).json(req.user);
+}
+
 module.exports.loginUser = async(req,res,next)=>{
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -90,40 +93,10 @@ module.exports.loginUser = async(req,res,next)=>{
     }
 }
 
-module.exports.inventory = async(req,res,next)=>{
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return res.status(400).json({
-            errors : errors.array()
-        });
-    }
-    try{
-    const {id,category,product,sellingPrice,costPrice,profit} = req.body;
+module.exports.logoutUser = async (req, res, next) => {
+    res.clearCookie('token');
+    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
 
-    const isProductAlready = await InventoryModel.findOne({
-            id
-        })
-    if(isProductAlready){
-            return res.status(400).json({message : "Product Already Registered"})
-        }
-    if(!id || !category || !product || !sellingPrice || !costPrice || !profit){
-            throw new Error("All fields are required ");
-        }
-    const Inventory = await InventoryModel.create({
-            id,
-            category,
-            product,
-            sellingPrice,
-            costPrice,
-            profit
-
-         })
-    console.log("Item Added");
-    res.status(201).json({Inventory})
-    }catch(err) {
-        console.log(err);
-        res.status(500).json({ message:"server error"});
-    }
+    res.status(200).json({ message: 'Logged out' });
 
 }
-
