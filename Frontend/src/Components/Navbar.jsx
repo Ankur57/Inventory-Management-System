@@ -17,7 +17,7 @@ const Navbar = () => {
     await axios.post(
       `${import.meta.env.VITE_BASE_URL}/user/logout`,
       {},
-      { withCredentials: true } // 👈 ensures cookie is sent & can be cleared
+      { withCredentials: true }
     );
 
     console.log("✅ Logged out successfully");

@@ -1,6 +1,6 @@
 import ReactECharts from "echarts-for-react";
 
-const Home_chart2 = () => {
+const SalesSourceChart = () => {
     const option = {
   xAxis: {
     type: 'category',
@@ -27,4 +27,4 @@ const Home_chart2 = () => {
     );
 }
 
-export default Home_chart2
+export default SalesSourceChart

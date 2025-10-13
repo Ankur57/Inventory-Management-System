@@ -1,20 +1,30 @@
 import myBG from "../assets/Background3.jpg"
 import Navbar from '../Components/Navbar'
 import Home_Chart from "../Components/Home_Chart"
-import Home_chart2 from "../Components/Home_chart2"
+import Home_chart2 from "../Components/SalesSourceChart"
 import { Link } from "react-router-dom"
-import Inventory from "./Inventory"
-import List from "../Components/List"
+import axios from "axios"
 import { useContext } from "react";
 import {InventoryContext} from "../Context/InventoryContext";
+import { CategoryContext } from "../Context/CategoryContext"
+import { ProductContext } from "../Context/ProductContext"
 import HomeList from "../Components/HomeList"
+import SalesPerMonthChart from "../Components/Chart1"
 
-// React
+
+const API_ENDPOINT = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/sales-per-month`,
+{
+  withCredentials: true, // ✅ send JWT cookie
+}
+);
+
 
 const Home = () => {
   const { inventoryList, setInventoryList } = useContext(InventoryContext);
+  const {CategoryList,setCategoryList} = useContext(CategoryContext)
+  const {ProductList,setProductList} = useContext(ProductContext)
 
-  const handleDeleteItem = async (itemId) => {
+  const handleDeleteItem = async (itemId)  => {
   try {
     // 1. Delete from backend
     console.log(itemId)
@@ -29,7 +39,6 @@ const Home = () => {
   }
 };
 
-  
   return (
     <div
     style={{ backgroundImage: `url(${myBG})` }}
@@ -46,18 +55,18 @@ const Home = () => {
         </div>
         <div className="bg-red-50 flex flex-col items-center mr-10 ml-10 h-[55%] w-[18%]
          rounded-xl border-2 border-slate-950">
-          <h2 className="font-Playfair text-xl md:text-2xl">Total Items</h2>
-          <h2 className="font-Playfair  text-4xl mt-3">100</h2>
+          <h2 className="font-Playfair text-xl md:text-2xl">Categories</h2>
+          <h2 className="font-Playfair  text-4xl mt-3">{CategoryList.length}</h2>
         </div>
         <div className=" bg-red-100 flex flex-col items-center ml-10 h-[55%] w-[18%]
          rounded-xl border-2 border-slate-950">
-          <h2 className="font-Playfair text-xl md:text-2xl">Total Items</h2>
-          <h2 className="font-Playfair text-4xl mt-3">100</h2>
+          <h2 className="font-Playfair text-xl md:text-2xl">Product</h2>
+          <h2 className="font-Playfair text-4xl mt-3">{ProductList.length}</h2>
         </div>
         <div className=" bg-red-100 mr-14 flex flex-col items-center ml-10 h-[55%] w-[18%]
          rounded-xl border-2 border-slate-950">
-          <h2 className="font-Playfair text-xl md:text-2xl">Total Items</h2>
-          <h2 className="font-Playfair text-4xl mt-3">100</h2>
+          <h2 className="font-Playfair text-xl md:text-2xl">Revenue</h2>
+          <h2 className="font-Playfair text-4xl mt-3">{API_ENDPOINT.data[0].totalSales}</h2>
         </div>
         </div>
       {/*Home Section 1 - Mobile view*/}
@@ -71,36 +80,35 @@ const Home = () => {
       <div className="bg-red-50 flex flex-col items-center mr-10 ml-10 h-[55%] w-[50%] min-[410px]:w-[30%]
         rounded-xl border-2 border-slate-950">
         <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Categories</h2>
-        <h2 className="font-Playfair  text-4xl mt-3">100</h2>
+        <h2 className="font-Playfair  text-4xl mt-3">{CategoryList.length}</h2>
       </div>
       </div>
       <div className="flex items-center justify-between sm:gap-44 w-[90%] h-[50%]">
       <div className="bg-red-50 flex flex-col items-center ml-10 h-[55%] w-[50%] min-[410px]:w-[30%]
         rounded-xl border-2 border-slate-950">
-        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Revenue</h2>
-        <h2 className="font-Playfair text-4xl mt-3">100</h2>
+        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Product</h2>
+        <h2 className="font-Playfair text-4xl mt-3">{ProductList.length}</h2>
       </div>
       <div className="bg-red-50 flex flex-col items-center mr-10 ml-10 h-[55%] w-[50%] min-[410px]:w-[30%]
         rounded-xl border-2 border-slate-950">
-        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Total Items</h2>
-        <h2 className="font-Playfair text-4xl mt-3">100</h2>
+        <h2 className="font-Playfair text-lg min-[450]:text-xl md:text-2xl">Revenue</h2>
+        <h2 className="font-Playfair text-4xl mt-3">{API_ENDPOINT.data[0].totalSales}</h2>
       </div>
       </div>
       </div>
       {/*Home Section 2 - Inventory Desktop-view */}
-      <div className="hidden md:flex flex-col h-[100%] w-[98%]">
+      <div className="hidden md:flex flex-col h-[100%] w-[98%] ">
       <div className="ml-5 w-[100%] bg-red-50 mt-5 mr-5 h-[50%] gap-4 md:flex">
         <div className="w-[70%] h-[100%]  border-2 border-slate-950  overflow-auto">
           <div className="flex justify-between w-[100%] ">
-          <h1 className="font-Playfair text-xl ml-5 font-bold">Inventory</h1>
+          <h1 className="font-Playfair text-2xl md:text-4xl p-2 font-semibold">Your Inventory</h1>
           <Link to='/inventory'
           className="font-bold text-right text-blue-800 mb-4 mr-2 mt-2 underline underline-offset-2
           cursor-pointer">Manage Inventory</Link>
           </div>
-          <div className="flex justify-between mr-3 ml-2">
+          <div className="flex justify-between mr-3 ml-2 bg-red-50">
             <HomeList handleDeleteItem={handleDeleteItem}
             inventoryList={inventoryList} setInventoryList={setInventoryList} />
-            
           </div>
       </div>
       <div className="w-[30%] h-[100%] border-2 border-slate-950">
@@ -110,7 +118,7 @@ const Home = () => {
       </div>
       <div
       style={{ backgroundImage: `url(${myBG})` }} 
-      className="hidden ml-5 w-[100%] bg-red-50 mt-5 mr-5 h-[50%] gap-4 md:flex">
+      className="hidden ml-5 w-[100%] bg-red-50 mt-5 mr-5 h-[70%] gap-4 md:flex">
       <div className="w-[100%] h-[100%] border-2 bg-red-50  border-slate-950">
         <div className="flex justify-between w-[100%] p-2">
           <h1 className="font-Playfair text-xl p-2 font-bold">Sales Over Time</h1>
@@ -118,7 +126,7 @@ const Home = () => {
           className="font-bold text-right text-blue-800 p-2 underline underline-offset-2
           cursor-pointer">Business Insights</Link>
           </div>
-        <Home_chart2/>
+        <SalesPerMonthChart/>
       </div>
       </div>
       </div>
@@ -147,7 +155,7 @@ const Home = () => {
           className="font-bold text-right text-blue-800 p-2 underline underline-offset-2
           cursor-pointer">Business Insights</Link>
           </div>
-        <Home_chart2/>
+        <SalesPerMonthChart/>
       </div>
       </div>
     </div>

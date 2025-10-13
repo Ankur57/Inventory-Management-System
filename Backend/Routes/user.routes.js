@@ -4,6 +4,7 @@ const controller = require('../Controller/controller')
 const {body} = require('express-validator')
 const inventory = require('../Controller/inventory.controller')
 const authmiddleware = require('../Middleware/auth.middleware')
+const ProductModel  = require('../Models/product.model')
 
 
 router.post('/register',[
@@ -36,6 +37,31 @@ router.post(
   ],
   inventory.inventory
 );
+router.post(
+  '/AddCategory',
+  [
+    body('name').notEmpty().withMessage('Category is required'),
+  ],
+  inventory.AddCategory
+);
+
+router.post(
+  '/AddProduct',
+  [
+    body('name').notEmpty().withMessage('Product is required'),
+  ],
+  inventory.AddProduct
+);
+router.post(
+  '/AddSource',
+  [
+    body('name').notEmpty().withMessage('Name is required'),
+    body('sales').notEmpty().withMessage('Sales is required')
+  ],
+  inventory.AddSource
+);
+
+
 
 router.post('/logout', authmiddleware.authUser, (req, res) => {
   res.clearCookie('token', {
@@ -46,11 +72,63 @@ router.post('/logout', authmiddleware.authUser, (req, res) => {
   return res.status(200).json({ message: "Logged out successfully" });
 });
 
+router.post(
+  '/sales',
+  [
+    body('id').notEmpty().withMessage('ID is required'),
+    body('product').notEmpty().withMessage('Product is required'),
+    body('category').notEmpty().withMessage('Category is required'),
+    body('sellingPrice').isNumeric().withMessage('Selling Price must be a number'),
+    body('profit').isNumeric().withMessage('Profit must be a number'),
+  ],
+  inventory.sales
+);
+
+// PUT /user/updateQuantity
+router.put('/updateQuantity',
+  [
+    body('name').notEmpty().withMessage('Name is required'),
+   
+  ],
+  inventory.updateQuantity
+);
+
+// Route for total profit (existing)
+router.get('/totalprofit', inventory.getTotalProfit); 
+
+// New route for fetching total revenue
+router.get('/totalrevenue', inventory.getTotalRevenue);
+
+router.put('/updateCategoryQuantity',
+  [
+    body('name').notEmpty().withMessage('Name is required'),
+   
+  ],
+  inventory.updateCategoryQuantity
+);
+
+router.put('/DecreaseProductQuantity',
+  [
+    body('name').notEmpty().withMessage('Name is required'),
+   
+  ],
+  inventory.DecreaseProductQuantity
+);
+
+router.put('/DecreaseCategoryQuantity',
+  [
+    body('name').notEmpty().withMessage('Name is required'),
+   
+  ],
+  inventory.DecreaseCategoryQuantity
+);
+
 // Get all inventory items
 router.get('/inventory', authmiddleware.authUser, inventory.getInventory);
-router.delete('/inventory/:id',authmiddleware.authUser, inventory.deleteInventory);
-router.get('/profile',authmiddleware.authUser,controller.getUserProfile)
-
-
+router.get('/product', authmiddleware.authUser, inventory.getProduct);
+router.get('/category', authmiddleware.authUser, inventory.getCategory);
+router.delete('/inventory/:id', inventory.deleteInventory);
+router.get('/profile',authmiddleware.authUser,controller.getUserProfile);
+router.get('/sales-per-month',inventory.salesData);
 
 module.exports = router;

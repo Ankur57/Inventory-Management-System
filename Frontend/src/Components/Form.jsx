@@ -7,14 +7,14 @@ const Form = (props) => {
     const [productName, setProductName] = useState("");
     const [costPrice, setCostPrice] = useState("");
     const [sellingPrice, setSellingPrice] = useState("");
+    
 
     const handleSubmit = (e)=>{
       e.preventDefault()
 
-
       const cost = parseFloat(costPrice);
       const selling = parseFloat(sellingPrice);
-      const profit = (selling - cost) || 0;
+      const profit = (selling - cost) || 0;  
 
       const newItem = {
             id: productId,//Can be generated automatically 
@@ -22,7 +22,7 @@ const Form = (props) => {
             product: productName,
             sellingPrice: selling,
             costPrice: cost,
-            profit,
+            profit
         };
 
         props.onAddItem(newItem);
@@ -38,14 +38,13 @@ const Form = (props) => {
 
   return (
     <div className='h-[100%] w-[100%] flex items-center justify-center relative '>
-      {/*Desktop view*/}{/**/}
       {/*Mobile view*/}
         <div className='h-[80%] w-[80%] md:w-[50%] flex flex-col items-center bg-stone-200 border-2
          overflow-auto border-black rounded-sm'>
             <div className='w-[100%] flex flex-col items-center'>
               {/*Heading placeholder:italic */}
               <div className='flex justify-between w-[95%] items-center'>
-                <h1 className='font-Playfair font-semibold text-2xl md:text-4xl '>Add Items
+                <h1 className='font-Playfair font-semibold text-2xl md:text-4xl'>Add Items
                 </h1>
                 <i 
                 onClick={props.onClose}
@@ -62,21 +61,24 @@ const Form = (props) => {
                   <input
                   value={productId}
                   onChange= {(e)=>{setProductId(e.target.value)}}
-                  type='text' placeholder='Enter Product Id'  className='p-2 placeholder:italic ' ></input>
+                  type='text' placeholder='Enter Product Id' className='p-2 placeholder:italic'></input>
                 </div>
-                <div className='flex flex-col  '>
+                <div className='flex flex-col '>
                   <h1 className='text-xl font-semibold'>Select category</h1>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="border p-2 rounded w-[100%]"
+                    className="border p-2 rounded w-[100%] overflow-auto"
                   >
                     <option value="">-- Select --</option>
-                    <option value="Jewellery">Jewellery</option>
-                    <option value="Ring">Ring</option>
+                    {props.CategoryList.map(item => (
+                      <option key={item._id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))} 
                    </select>
                    <button
-                    onClick={() => props.setCategoryform(true)} 
+                    onClick={() => props.setCategoryform(true)}
                    type="button" className='rounded-lg bg-slate-400 text-black w-[13%] p-1 mt-1 opacity-80 text-sm '>Add</button>
               </div>
               
@@ -87,20 +89,25 @@ const Form = (props) => {
                   <select
                     value={productName}
                     onChange={(e) => setProductName(e.target.value)}
-                    className="border p-2 rounded"
+                    className="border p-2 rounded overflow-auto"
                   >
                     <option value="">-- Select --</option>
-                    <option value="Ring">Ring</option>
-                    <option value="Necklace">Necklace</option> 
+                    {props.ProductList.map(item => (
+                      <option key={item._id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))} 
                    </select>
-                   <button type="button" className='rounded-lg bg-slate-400 text-black w-[13%] p-1 mt-1 opacity-80 text-sm '>Add</button>
+                   <button
+                   onClick={() => props.setProductform(true)}
+                   type="button" className='rounded-lg bg-slate-400 text-black w-[13%] p-1 mt-1 opacity-80 text-sm '>Add</button>
                 </div>
                 <div className='flex flex-col'>
                   <h1 className=' text-xl font-semibold'>Enter Cost Price</h1>
                   <input
                   value={costPrice}
                   onChange={(e) => setCostPrice(e.target.value)}
-                  type='number' placeholder='Cost Price'  className='p-2 placeholder:italic ' ></input>
+                  type='number' placeholder='Cost Price'  className='p-2 placeholder:italic'></input>
                 </div>
               
               {/*Row-3*/}
