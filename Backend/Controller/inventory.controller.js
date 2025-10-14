@@ -269,6 +269,8 @@ module.exports.AddProduct = async(req,res,next)=>{
 
 module.exports.AddSource = async(req,res,next)=>{
     const errors = validationResult(req);
+    console.log("Inside Add Source............................")
+    console.log(req.body)
     if(!errors.isEmpty()){
         return res.status(400).json({
             errors : errors.array()
@@ -277,23 +279,29 @@ module.exports.AddSource = async(req,res,next)=>{
     try{
     const {name,sales,description} = req.body;
 
-    const isProductAlready = await SourceModel.findOne({
-            name
-        })
-    if(isProductAlready){
-            return res.status(400).json({message : "Source Already Registered"})
-        }
-    if(!name || !sales){
-            throw new Error("All fields are required ");
-        }
-    const Source = await SourceModel.create({
-           name,
-           sales,
-           description
-         })
+    const updatedSource = await SourceModel.findOneAndUpdate(
+    // Query: Find a document where the name matches the one from the request body
+    { name: name },
+    // Update: Use $inc to increment the 'sales' field by the provided amount
+    {
+        $inc: { sales: sales },
+        // $setOnInsert is used to set the description ONLY if a new document is created
+        $setOnInsert: { description: description }
+    },
+    // Options: THIS IS WHERE THE MAGIC HAPPENS
+    {
+        new: true,
+        // *** 1. If not found, a new document is created ***
+        upsert: true, 
+        runValidators: true,
+        // *** 2. The default value of 'sales' (0) is respected on creation ***
+        setDefaultsOnInsert: true 
+    }
+);
+
     
     console.log("Source Added");
-    res.status(201).json({Source})
+    res.status(201).json({updatedSource})
     } catch(err) {
         console.log(err);
         res.status(500).json({ message:"server error"});
@@ -321,7 +329,14 @@ module.exports.getProduct = async (req, res) => {
   }
 };
 
-
+module.exports.getSource = async (req, res) => {
+  try {
+    const items = await SourceModel.find();
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching Product inventory", error });
+  }
+};
 
 module.exports.getCategory = async (req, res) => {
   try {
@@ -446,8 +461,6 @@ module.exports.salesData = async(req,res,next)=>{
                 }
             }
         ]);
-        console.log("This is SalesData..................................")
-        console.log(salesData)
         res.json(salesData);
 
     } catch (error) {

@@ -12,6 +12,7 @@ import ProductProvider from './Context/ProductContext'
 import InventoryProvider from './Context/InventoryContext'
 import MatrixProvider from './Context/MetricsContext'
 import { Route, Routes} from 'react-router-dom'
+import SourceProvider from './Context/SourceContext'
 
 
 export default function App() {
@@ -53,7 +54,9 @@ export default function App() {
         <Route path = '/insights' element = {
           <CategoryProvider>
             <ProductProvider>
-              <Insights/>
+              <SourceProvider>
+                <Insights/>
+              </SourceProvider>
             </ProductProvider>
           </CategoryProvider>
           

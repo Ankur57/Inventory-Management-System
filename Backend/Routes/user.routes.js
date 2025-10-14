@@ -4,7 +4,6 @@ const controller = require('../Controller/controller')
 const {body} = require('express-validator')
 const inventory = require('../Controller/inventory.controller')
 const authmiddleware = require('../Middleware/auth.middleware')
-const ProductModel  = require('../Models/product.model')
 
 
 router.post('/register',[
@@ -60,8 +59,6 @@ router.post(
   ],
   inventory.AddSource
 );
-
-
 
 router.post('/logout', authmiddleware.authUser, (req, res) => {
   res.clearCookie('token', {
@@ -126,6 +123,7 @@ router.put('/DecreaseCategoryQuantity',
 // Get all inventory items
 router.get('/inventory', authmiddleware.authUser, inventory.getInventory);
 router.get('/product', authmiddleware.authUser, inventory.getProduct);
+router.get('/source', authmiddleware.authUser, inventory.getSource);
 router.get('/category', authmiddleware.authUser, inventory.getCategory);
 router.delete('/inventory/:id', inventory.deleteInventory);
 router.get('/profile',authmiddleware.authUser,controller.getUserProfile);

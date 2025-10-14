@@ -31,7 +31,7 @@ const Product = (props) => {
                 onClick= {()=>{props.handleCloseProductForm(false)}}
                 className=" font-medium text-3xl ri-arrow-left-circle-line text-right mt-3"></i>
               </div>
-                <div className="h-1 w-[150%] sm:w-[100%] bg-gray-500 mb-5 mt-2"></div>
+                <div className=" w-[150%] sm:w-[100%] bg-gray-500 mb-5 mt-2"></div>
             </div>
             <form 
             onSubmit={(e)=>{SumbitHandler(e)}}    

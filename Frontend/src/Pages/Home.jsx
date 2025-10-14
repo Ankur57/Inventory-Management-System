@@ -2,14 +2,14 @@ import myBG from "../assets/Background3.jpg"
 import Navbar from '../Components/Navbar'
 import Home_Chart from "../Components/Home_Chart"
 import Home_chart2 from "../Components/SalesSourceChart"
+import { useContext } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
-import { useContext } from "react";
-import {InventoryContext} from "../Context/InventoryContext";
-import { CategoryContext } from "../Context/CategoryContext"
-import { ProductContext } from "../Context/ProductContext"
+import { useEffect,useState } from "react";
 import HomeList from "../Components/HomeList"
 import SalesPerMonthChart from "../Components/Chart1"
+import { CategoryContext } from "../Context/CategoryContext"; // <-- Used to get CategoryList
+import { ProductContext } from "../Context/ProductContext"; 
 
 
 const API_ENDPOINT = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/sales-per-month`,
@@ -20,24 +20,28 @@ const API_ENDPOINT = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/sale
 
 
 const Home = () => {
-  const { inventoryList, setInventoryList } = useContext(InventoryContext);
-  const {CategoryList,setCategoryList} = useContext(CategoryContext)
-  const {ProductList,setProductList} = useContext(ProductContext)
+  const [inventoryList, setinventoryList] = useState([])
+  const { CategoryList, setCategoryList } = useContext(CategoryContext); // <-- Defined here!
+    const { ProductList, setProductList } = useContext(ProductContext)
 
-  const handleDeleteItem = async (itemId)  => {
-  try {
-    // 1. Delete from backend
-    console.log(itemId)
-    await axios.delete(`${import.meta.env.VITE_BASE_URL}/user/inventory/${itemId}`);
+  useEffect(() => {
+      const fetchInventory = async () => {
+        try {
+          const res = await axios.get(
+            `${import.meta.env.VITE_BASE_URL}/user/inventory`,
+            {
+              withCredentials: true, // ✅ send JWT cookie
+            }
+          );
+          setinventoryList(res.data);
+        } catch (error) {
+          console.error("Error fetching inventory:", error);
+        }
+      };
+  
+      fetchInventory();
+    }, []);
 
-    // 2. Remove from local state to update UI
-    setInventoryList((prevList) =>
-      prevList.filter((item) => item._id !== itemId)
-    );
-  } catch (error) {
-    console.error("Error deleting item:", error);
-  }
-};
 
   return (
     <div
@@ -107,8 +111,8 @@ const Home = () => {
           cursor-pointer">Manage Inventory</Link>
           </div>
           <div className="flex justify-between mr-3 ml-2 bg-red-50">
-            <HomeList handleDeleteItem={handleDeleteItem}
-            inventoryList={inventoryList} setInventoryList={setInventoryList} />
+            <HomeList
+            inventoryList={inventoryList} />
           </div>
       </div>
       <div className="w-[30%] h-[100%] border-2 border-slate-950">
@@ -116,8 +120,10 @@ const Home = () => {
         <Home_Chart/>
       </div>
       </div>
+      <div style={{ backgroundImage: `url(${myBG})` }} 
+        className="bg"
+      ></div>
       <div
-      style={{ backgroundImage: `url(${myBG})` }} 
       className="hidden ml-5 w-[100%] bg-red-50 mt-5 mr-5 h-[70%] gap-4 md:flex">
       <div className="w-[100%] h-[100%] border-2 bg-red-50  border-slate-950">
         <div className="flex justify-between w-[100%] p-2">
@@ -140,8 +146,8 @@ const Home = () => {
           cursor-pointer">Manage Inventory</h2>
           </div>
           <div className="flex justify-between mr-3 ml-2">
-            <HomeList handleDeleteItem={handleDeleteItem}
-            inventoryList={inventoryList} setInventoryList={setInventoryList}/>
+            <HomeList
+            inventoryList={inventoryList}/>
           </div>
       </div>   
       <div className="w-[100%] h-[100%] border-2 bg-red-50 border-slate-950">

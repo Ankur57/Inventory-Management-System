@@ -53,7 +53,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center gap-6 py-6 md:hidden">
+        <div className="absolute z-50 top-16 left-0 w-full bg-white shadow-md flex flex-col items-center gap-6 py-6 md:hidden">
           <Link to = '/home' className="font-Playfair text-lg cursor-pointer">Home</Link>
           <Link to = '/inventory' className="font-Playfair text-lg cursor-pointer">Inventory</Link>
           <Link to = '/insights' className="font-Playfair text-lg cursor-pointer">Insights</Link>

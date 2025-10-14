@@ -1,4 +1,8 @@
+
+
+
 const HomeList = (props) => {
+
   const headers = [
     "Product ID",
     "Category",
@@ -81,7 +85,6 @@ const HomeList = (props) => {
                         {/* Action */}
                         <div role="cell" className="p-2 text-center w-[12%] flex justify-around">
                           <i
-                            onClick={() => props.handleDeleteItem(item._id)}
                             className="ri-delete-bin-line text-red-600 cursor-pointer text-xl hover:scale-110"
                             title="Delete Item"
                           ></i>
