@@ -10,16 +10,31 @@ const cookieParser = require('cookie-parser');
 // ✅ Connect to Database
 connectToDb();
 
-// ✅ Correct CORS setup
+// Define the specific origins you want to allow
+const allowedOrigins = [
+    'http://localhost:5173', // Keep this for local development
+    'https://inventory-management-system-frontend-j621.onrender.com' // <-- The REQUIRED DEPLOYED URL
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173', // your React frontend URL
-  credentials: true                // allows cookies to be sent and received
+    origin: function (origin, callback) {
+        // If the origin is in the allowed list, or if it's a request with no origin (e.g., cURL, some non-browser requests)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            // Block the request if the origin is not allowed
+            callback(new Error('Not allowed by CORS'), false);
+        }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Ensure all methods you use are listed
+    credentials: true // Keep this since you are using cookie-parser and credentials
 }));
 
 // ✅ Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 
 // ✅ Test Route
 app.get('/', (req, res) => {

@@ -19,6 +19,7 @@ const UserProtectWrapper = ({ children }) => {
           setIsAuthenticated(true);
         }
       } catch (error) {
+        console.log("Inside UserProtectWrapper------------------------------------ ")
         console.log("Unauthorized:", error);
         navigate('/login');
       } finally {

@@ -1,7 +1,6 @@
 import myBG from "../assets/Background3.jpg"
 import Navbar from '../Components/Navbar'
 import Home_Chart from "../Components/Home_Chart"
-import Home_chart2 from "../Components/SalesSourceChart"
 import { useContext } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
@@ -17,7 +16,7 @@ const API_ENDPOINT = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/sale
   withCredentials: true, // ✅ send JWT cookie
 }
 );
-
+console.log(API_ENDPOINT)
 
 const Home = () => {
   const [inventoryList, setinventoryList] = useState([])

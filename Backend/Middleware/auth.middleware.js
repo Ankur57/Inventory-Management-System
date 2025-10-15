@@ -4,9 +4,11 @@ const jwt = require("jsonwebtoken");
 
 module.exports.authUser = async(req,res,next)=>{
     const token = req.cookies.token;
+    console.log(token)
 
     if(!token){
-        return res.status(401).json({message : "Unauthozied"})
+        console.log("Inside authUser---------------------------------------------------------");
+        return res.status(400).json({message : "Unauthozied"})
     }
 
     try{
@@ -20,6 +22,7 @@ module.exports.authUser = async(req,res,next)=>{
         return next();
     }
     catch(err){
-        return res.status(401).json({message : "Unauthorized"})
+        console.log("Inside authUser---------------------------------------------------------");
+        return res.status(400).json({message : "Unauthorized"})
     }
 }
