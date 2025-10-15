@@ -12,7 +12,7 @@ connectToDb();
 
 // ✅ Correct CORS setup
 app.use(cors({
-  origin: 'http://localhost:5173', // your React frontend URL
+  origin: '*', // your React frontend URL
   credentials: true                // allows cookies to be sent and received
 }));
 
