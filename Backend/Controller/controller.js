@@ -40,8 +40,14 @@ module.exports.registerUser = async(req,res,next)=>{
             code : hashedCode
          })
 
-         const token =  user.generateAuthToken();
-         res.cookie('token',token);
+            const token =  user.generateAuthToken();
+            const cookieOptions = {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+            };
+            res.cookie('token', token, cookieOptions);
          console.log("User Registered");
          res.status(201).json({token,user})
     }catch(err) {
@@ -79,8 +85,14 @@ module.exports.loginUser = async(req,res,next)=>{
         }
 
         const token = user.generateAuthToken();
+        const cookieOptions = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        };
 
-        res.cookie('token',token);
+        res.cookie('token', token, cookieOptions);
         console.log("User Logined");
         res.status(200).json({token,user});
     }
@@ -94,8 +106,16 @@ module.exports.loginUser = async(req,res,next)=>{
 }
 
 module.exports.logoutUser = async (req, res, next) => {
-    res.clearCookie('token');
-    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
+    // Clear cookie using same options (path/sameSite/secure) so browser removes it correctly in production
+    const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        path: '/'
+    };
+
+    res.clearCookie('token', cookieOptions);
+    const token = req.cookies.token || (req.headers.authorization ? req.headers.authorization.split(' ')[1] : null);
 
     res.status(200).json({ message: 'Logged out' });
 
