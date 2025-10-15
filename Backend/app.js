@@ -10,10 +10,6 @@ const cookieParser = require('cookie-parser');
 // ✅ Connect to Database
 connectToDb();
 
-<<<<<<< HEAD
-// Define the specific origins you want to allow
-=======
->>>>>>> 9b2f4e2411c4660e846a8359f93bea99bbff6e84
 const allowedOrigins = [
     'http://localhost:5173', // Keep this for local development
     'https://inventory-management-system-frontend-j621.onrender.com' // <-- The REQUIRED DEPLOYED URL
