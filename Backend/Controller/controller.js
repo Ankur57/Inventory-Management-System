@@ -63,6 +63,7 @@ module.exports.getUserProfile = async(req,res,next)=>{
 module.exports.loginUser = async(req,res,next)=>{
     const errors = validationResult(req);
     if(!errors.isEmpty()){
+        console.log("Inside Login User")
         return res.status(400).json({
             errors : errors.array()
         });
