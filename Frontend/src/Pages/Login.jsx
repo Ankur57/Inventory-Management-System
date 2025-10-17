@@ -23,7 +23,7 @@ const Login = () => {
       withCredentials: true // 👈 very important for cookies
     }
   );
-localstorage.setItem(response.data)
+
   if (response.status === 200) {
     console.log("✅ Login successful");
     console.log("User:", response.data.user);
