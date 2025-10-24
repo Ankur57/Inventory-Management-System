@@ -44,7 +44,7 @@ module.exports.registerUser = async(req,res,next)=>{
             const cookieOptions = {
                 httpOnly: true,
                 // CRITICAL: Needs to be true for cross-origin HTTPS (which Render is)
-                secure: process.env.NODE_ENV === 'production', 
+                secure: true, 
                 // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
                 sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
@@ -91,7 +91,7 @@ module.exports.loginUser = async(req,res,next)=>{
         const cookieOptions = {
             httpOnly: true,
             // CRITICAL: Needs to be true for cross-origin HTTPS (which Render is)
-            secure: process.env.NODE_ENV === 'production', 
+            secure: true, 
             // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
@@ -115,7 +115,7 @@ module.exports.logoutUser = async (req, res, next) => {
     // Clear cookie using same options (path/sameSite/secure) so browser removes it correctly in production
     const cookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
         path: '/'
     };
