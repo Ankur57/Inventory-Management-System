@@ -100,7 +100,9 @@ const Home = () => {
       </div>
       </div>
       {/*Home Section 2 - Inventory Desktop-view */}
-      <div className="hidden md:flex flex-col h-[100%] w-[98%] ">
+      <div className="hidden md:flex flex-col h-[130%] w-[98%] bg-cover"
+      style={{ backgroundImage: `url(${myBG})` }}
+      >
       <div className="ml-5 w-[100%] bg-red-50 mt-5 mr-5 h-[50%] gap-4 md:flex">
         <div className="w-[70%] h-[100%]  border-2 border-slate-950  overflow-auto">
           <div className="flex justify-between w-[100%] ">
