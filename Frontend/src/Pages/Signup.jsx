@@ -25,14 +25,19 @@ const Signup = () => {
       code
     }
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/register`,newUser);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/register`,
+        newUser,
+        {
+          withCredentials: true, // ✅ allow backend to set cookie
+        }
+      );
       setemail('')
       setpassword('')
       setfirstname('')
       setlastname('')
 
       if(response.status === 201){
-        localStorage.setItem('token',response.data.token);
         navigate('/home')
       }
       if(response.status === 400){
