@@ -46,7 +46,7 @@ module.exports.registerUser = async(req,res,next)=>{
                 // CRITICAL: Needs to be true for cross-origin HTTPS (which Render is)
                 secure: true, 
                 // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
-                sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
+                sameSite: 'None',
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
             };
             res.cookie('token', token, cookieOptions);
@@ -93,7 +93,7 @@ module.exports.loginUser = async(req,res,next)=>{
             // CRITICAL: Needs to be true for cross-origin HTTPS (which Render is)
             secure: true, 
             // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
-            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
+            sameSite: 'None', 
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         };
 
@@ -116,7 +116,7 @@ module.exports.logoutUser = async (req, res, next) => {
     const cookieOptions = {
         httpOnly: true,
         secure: true,
-        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        sameSite: 'None',
         path: '/'
     };
 
