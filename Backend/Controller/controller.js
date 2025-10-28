@@ -102,6 +102,7 @@ module.exports.loginUser = async(req,res,next)=>{
         res.cookie('token', token, cookieOptions);
         console.log("This is LoginUser in Controller.js");
         console.log(token);
+         console.log('Cookies:', req.cookies);
         console.log("User Logined");
         res.status(200).json({token,user});
     }
