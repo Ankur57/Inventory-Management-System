@@ -47,6 +47,7 @@ module.exports.registerUser = async(req,res,next)=>{
                 secure: true, 
                 // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
                 sameSite: 'None',
+                domain: '.onrender.com',
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
             };
             res.cookie('token', token, cookieOptions);
@@ -94,6 +95,7 @@ module.exports.loginUser = async(req,res,next)=>{
             secure: true, 
             // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
             sameSite: 'None', 
+            domain: '.onrender.com',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         };
 
