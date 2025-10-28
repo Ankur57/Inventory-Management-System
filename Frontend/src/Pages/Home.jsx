@@ -19,6 +19,7 @@ const API_ENDPOINT = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/sale
 console.log(API_ENDPOINT)
 
 const Home = () => {
+  console.log("Inside Home Component of Frontend");
   const [inventoryList, setinventoryList] = useState([])
   const { CategoryList, setCategoryList } = useContext(CategoryContext); // <-- Defined here!
     const { ProductList, setProductList } = useContext(ProductContext)
