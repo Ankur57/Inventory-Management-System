@@ -28,7 +28,11 @@ const Insights = () => {
 
   const handleNewSource = async (Source) => {
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/AddSource`,Source);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/AddSource`,Source,
+         {
+            withCredentials: true // 👈 very important for cookies
+          }                
+       );
 
       if(response.status === 400){
         alert("Source Already exist")
@@ -50,7 +54,10 @@ const handleCloseSourceForm = () => {
   };
 const handleAddSource = async (Source) => {
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/AddSource`,Source);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/AddSource`,Source,
+      {
+      withCredentials: true // 👈 very important for cookies
+    });
 
       if(response.status === 400){
         alert("Source Already exist")
