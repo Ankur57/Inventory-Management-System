@@ -43,12 +43,11 @@ module.exports.registerUser = async(req,res,next)=>{
             const token =  user.generateAuthToken();
             const cookieOptions = {
                 httpOnly: true,
-                // CRITICAL: Needs to be true for cross-origin HTTPS (which Render is)
                 secure: true, 
-                // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
                 sameSite: 'None',
                 path: '/',
-                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+                domain: '.onrender.com' // Adjust this to match your domain
             };
             res.cookie('token', token, cookieOptions);
          console.log("User Registered");
@@ -116,15 +115,20 @@ module.exports.loginUser = async(req,res,next)=>{
 }
 
 module.exports.logoutUser = async (req, res, next) => {
-    // Clear cookie using same options (path/sameSite/secure) so browser removes it correctly in production
     const cookieOptions = {
         httpOnly: true,
         secure: true,
         sameSite: 'None',
-        path: '/'
+        path: '/',
+        domain: '.onrender.com', // Match the domain used in setting cookie
+        maxAge: 0 // Immediately expire the cookie
     };
 
+    // Clear the cookie multiple ways to ensure it's removed
     res.clearCookie('token', cookieOptions);
+    res.cookie('token', '', { ...cookieOptions, maxAge: 0 });
+    
+    // Clear from headers too
     const token = req.cookies.token || (req.headers.authorization ? req.headers.authorization.split(' ')[1] : null);
 
     res.status(200).json({ message: 'Logged out' });
