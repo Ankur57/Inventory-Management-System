@@ -63,8 +63,9 @@ router.post(
 router.post('/logout', authmiddleware.authUser, (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
-    sameSite: 'none', // 'lax' if both on localhost
-    secure: false,    // true only in production (HTTPS)
+    sameSite: 'None', // 'lax' if both on localhost
+    secure: true,
+    path: '/', // true only in production (HTTPS)
   });
   return res.status(200).json({ message: "Logged out successfully" });
 });
