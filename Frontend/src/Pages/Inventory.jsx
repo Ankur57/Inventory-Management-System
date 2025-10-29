@@ -77,7 +77,11 @@ const getFilteredInventoryList = () => {
 
    const handleAddItem = async (newItem) => {
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/inventory`,newItem);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/inventory`,newItem,
+        {
+            withCredentials: true // 👈 very important for cookies
+          }
+     );
       
       if(response.status === 400){
         alert("ProductID Already exist")
@@ -108,7 +112,10 @@ const getFilteredInventoryList = () => {
 
   const handleAddCategory = async (Category) => {
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/Addcategory`,Category);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/Addcategory`,Category,
+      {
+      withCredentials: true // 👈 very important for cookies
+    });
 
       if(response.status === 400){
         alert("Category Already exist")
@@ -126,7 +133,10 @@ const getFilteredInventoryList = () => {
 
   const handleAddProduct = async (Product) => {
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/AddProduct`,Product);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/AddProduct`,Product,
+      {
+      withCredentials: true // 👈 very important for cookies
+    });
 
       if(response.status === 400){
         alert("Category Already exist")
@@ -171,7 +181,10 @@ const getFilteredInventoryList = () => {
       { withCredentials: true }
     );
 
-    await axios.delete(`${import.meta.env.VITE_BASE_URL}/user/inventory/${itemId}`);
+    await axios.delete(`${import.meta.env.VITE_BASE_URL}/user/inventory/${itemId}`,
+    {
+      withCredentials: true // 👈 very important for cookies
+    });
 
     // 2. Remove from local state to update UI
       setInventoryList((prevList) =>
@@ -185,7 +198,10 @@ const getFilteredInventoryList = () => {
 const handleSales = async(product)=>{
   try {
     console.log(product)
-    await axios.post(`${import.meta.env.VITE_BASE_URL}/user/sales/`,product);
+    await axios.post(`${import.meta.env.VITE_BASE_URL}/user/sales/`,product,
+    {
+      withCredentials: true // 👈 very important for cookies
+    });
 
   } catch (error) {
     console.error("Error Updating Sales of item:", error);
