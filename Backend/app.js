@@ -10,23 +10,9 @@ const cookieParser = require('cookie-parser');
 // ✅ Connect to Database
 connectToDb();
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://inventory-management-system-frontend-j621.onrender.com'
-];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.warn("Blocked by CORS:", origin); // helpful for debugging
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: 'https://inventory-management-system-frontend-j621.onrender.com'
+  credentials: true
 }));
 
 
