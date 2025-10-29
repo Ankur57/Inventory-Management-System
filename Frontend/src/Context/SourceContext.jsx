@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export const SourceContext = createContext();
+axios.defaults.withCredentials = true;
 
 const SourceProvider = ({ children }) => {
   const [SourceList, setSourceList] = useState([]);

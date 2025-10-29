@@ -7,6 +7,7 @@ import axios from "axios";
 
 
 const Navbar = () => {
+  axios.defaults.withCredentials = true;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 

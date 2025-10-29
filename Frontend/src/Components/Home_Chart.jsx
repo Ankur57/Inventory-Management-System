@@ -5,6 +5,7 @@ import axios from "axios";
 
 // Helper function to transform the data
 const transformDataForChart = (products) => {
+  axios.defaults.withCredentials = true;
   // We add a check here to ensure 'products' is actually an array before mapping
   if (!Array.isArray(products)) {
     console.error("Chart data is not an array:", products);

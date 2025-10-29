@@ -12,6 +12,7 @@ const Signup = () => {
   const [lastname, setlastname] = useState('')
   const [code, setcode] = useState('')
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
   const submitHandler = async (e)=>{
     e.preventDefault();

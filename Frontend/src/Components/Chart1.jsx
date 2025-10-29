@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 
 const Chart1 = () => {
+    axios.defaults.withCredentials = true;
     const [chartData, setChartData] = useState({ months: [], sales: [] });
     const [isLoading, setIsLoading] = useState(true);
 

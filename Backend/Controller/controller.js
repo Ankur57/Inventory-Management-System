@@ -46,8 +46,7 @@ module.exports.registerUser = async(req,res,next)=>{
                 secure: true, 
                 sameSite: 'None',
                 path: '/',
-                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-                domain: '.onrender.com' // Adjust this to match your domain
+                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
             };
             res.cookie('token', token, cookieOptions);
          console.log("User Registered");
@@ -90,10 +89,8 @@ module.exports.loginUser = async(req,res,next)=>{
         const token = user.generateAuthToken();
         const cookieOptions = {
             httpOnly: true,
-            // CRITICAL: Needs to be true for cross-origin HTTPS (which Render is)
             secure: true, 
-            // 🛑 FIX: 'None' must be capitalized for the browser to accept it cross-origin 
-            sameSite: 'None', 
+            sameSite: 'None',
             path: '/',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         };
@@ -101,7 +98,8 @@ module.exports.loginUser = async(req,res,next)=>{
         res.cookie('token', token, cookieOptions);
         console.log("This is LoginUser in Controller.js");
         console.log(token);
-         console.log('Cookies:', req.cookies);
+        console.log('Cookies:',cookieOptions);
+        console.log("Set-Cookie header:", res.getHeader('Set-Cookie'));
         console.log("User Logined");
         res.status(200).json({token,user});
     }
@@ -117,11 +115,10 @@ module.exports.loginUser = async(req,res,next)=>{
 module.exports.logoutUser = async (req, res, next) => {
     const cookieOptions = {
         httpOnly: true,
-        secure: true,
+        secure: true, 
         sameSite: 'None',
         path: '/',
-        domain: '.onrender.com', // Match the domain used in setting cookie
-        maxAge: 0 // Immediately expire the cookie
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     };
 
     // Clear the cookie multiple ways to ensure it's removed

@@ -20,7 +20,7 @@ const Insights = () => {
     const [Sourceform, setSourceform] = useState(false)
     const SourceFormPanelRef = useRef(null)
     const {SourceList,setSourceList} = useContext(SourceContext)
-  
+    axios.defaults.withCredentials = true;
 
   const handleCloseSalesForm = () => {
     setSalesform(false);

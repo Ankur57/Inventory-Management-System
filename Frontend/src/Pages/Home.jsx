@@ -17,6 +17,7 @@ const API_ENDPOINT = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/sale
 }
 );
 console.log(API_ENDPOINT)
+axios.defaults.withCredentials = true;
 
 const Home = () => {
   console.log("Inside Home Component of Frontend");

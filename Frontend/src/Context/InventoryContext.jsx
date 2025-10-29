@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export const InventoryContext = createContext();
+axios.defaults.withCredentials = true;
 
 const InventoryProvider = ({ children }) => {
   const [inventoryList, setInventoryList] = useState([]);

@@ -29,7 +29,8 @@ const Inventory = () => {
   const [onSearchChange, setonSearchChange] = useState("") // Holds the current search query
   const FormPanelRef = useRef(null)
   const CategoryFormPanelRef = useRef(null)
-  const ProductFormPanelRef = useRef(null) 
+  const ProductFormPanelRef = useRef(null)
+axios.defaults.withCredentials = true; 
   
 // --- NEW FUNCTION TO HANDLE FILTERING AND SORTING ---
 const getFilteredInventoryList = () => {

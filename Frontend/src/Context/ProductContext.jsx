@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export const ProductContext = createContext();
+axios.defaults.withCredentials = true;
 
 const ProductProvider = ({ children }) => {
   const [ProductList, setProductList] = useState([]);
