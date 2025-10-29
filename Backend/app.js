@@ -11,7 +11,7 @@ const cookieParser = require('cookie-parser');
 connectToDb();
 
 app.use(cors({
-  origin: 'https://inventory-management-system-frontend-j621.onrender.com'
+  origin: 'https://inventory-management-system-frontend-j621.onrender.com',
   credentials: true
 }));
 
